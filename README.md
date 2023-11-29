@@ -23,4 +23,14 @@ jobs:
     with:
       TARGET: "src"
       THRESHOLD: 1
+    secrets:
+      JSCPD_CHECK_TOKEN: ${{ secrets.JSCPD_CHECK_TOKEN }}
 ```
+
+## Setup JSCPD_CHECK_TOKEN
+
+### 1. Generate personal access tokens from your Developer settings
+![CleanShot 2023-11-29 at 16 56 32](https://github.com/wix-incubator/jscpd-check/assets/24843808/983a2d73-9974-4624-a2b8-9a7b2e2ad577)
+
+### 2. Set Actions secrets from your repository
+![CleanShot 2023-11-29 at 17 00 33](https://github.com/wix-incubator/jscpd-check/assets/24843808/3b1a156d-3f29-434f-a358-2e4dd473552a)
