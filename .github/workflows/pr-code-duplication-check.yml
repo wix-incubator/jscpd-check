@@ -9,6 +9,9 @@ on:
       THRESHOLD:
         required: false
         type: number
+    secrets:
+      MY_GITHUB_TOKEN:
+        required: true
 
 permissions:
   issues: write
