@@ -1,13 +1,14 @@
 name: Code Duplication Check and Comment
 
-on: workflow_call:
-  inputs:
-    TARGET:
-      required: true
-      type: string
-    THRESHOLD:
-      required: false
-      type: number
+on: 
+  workflow_call:
+    inputs:
+      TARGET:
+        required: true
+        type: string
+      THRESHOLD:
+        required: false
+        type: number
 
 jobs:
   jscpd-check:
