@@ -10,7 +10,7 @@ on:
         required: false
         type: number
     secrets:
-      MY_GITHUB_TOKEN:
+      JSCPD_CHECK_TOKEN:
         required: true
 
 permissions:
@@ -27,7 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          token: ${{ secrets.MY_GITHUB_TOKEN }}
+          token: ${{ secrets.JSCPD_CHECK_TOKEN }}
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
