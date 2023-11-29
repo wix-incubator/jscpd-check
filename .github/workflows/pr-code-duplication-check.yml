@@ -1,0 +1,44 @@
+name: Code Duplication Check and Comment
+
+on: 
+  pull_request:
+
+jobs:
+  jscpd-check:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: "18"
+      - name: Install jscpd
+        run: npm install -g jscpd
+      - name: Run jscpd and Save Results
+        run: jscpd ${{ inputs.TARGET }} --reporters "json" --output "pr-code-duplication-check" --silent
+      - name: Comment PR with jscpd Results
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const fs = require('fs');
+
+            const path = 'pr-code-duplication-check/jscpd-report.json';
+            const threshold = ${{ inputs.THRESHOLD }} || 1;
+
+            const jscpdResult = fs.readFileSync(path, 'utf8');
+
+            const json = JSON.parse(jscpdResult);
+            const data = json.statistics.total;
+            if(data.clones > threshold){
+              const message = '💀Code Duplication Check💀\n' + `Duplications detection: Found ${data.clones} exact clones with ${data.duplicatedLines}(${data.percentage}%) duplicated lines in ${data.sources} files.`;
+              github.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: message
+              });
+            }
