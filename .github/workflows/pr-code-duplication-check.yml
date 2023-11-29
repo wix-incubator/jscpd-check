@@ -1,7 +1,13 @@
 name: Code Duplication Check and Comment
 
-on: 
-  pull_request:
+on: workflow_call:
+  inputs:
+    TARGET:
+      required: true
+      type: string
+    THRESHOLD:
+      required: false
+      type: number
 
 jobs:
   jscpd-check:
@@ -25,12 +31,9 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const fs = require('fs');
-
             const path = 'pr-code-duplication-check/jscpd-report.json';
             const threshold = ${{ inputs.THRESHOLD }} || 1;
-
             const jscpdResult = fs.readFileSync(path, 'utf8');
-
             const json = JSON.parse(jscpdResult);
             const data = json.statistics.total;
             if(data.clones > threshold){
